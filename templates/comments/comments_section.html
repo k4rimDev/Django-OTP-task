@@ -1,0 +1,8 @@
+<div class="comments-section">
+    <h4>Comments</h4>
+    {% for comment in comments %}
+        {% include 'comments/comment_item.html' %}
+    {% empty %}
+        <p>No comments yet.</p>
+    {% endfor %}
+</div>
