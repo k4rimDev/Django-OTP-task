@@ -1,3 +1,5 @@
+import mimetypes
+
 from django.core.cache import cache
 from django.contrib.auth import get_user_model
 from django.db import models
@@ -38,6 +40,19 @@ class File(models.Model):
 
     def __str__(self):
         return f"{self.file.name} owned by {self.owner.email}"
+    
+    def save(self, *args, **kwargs):
+        if self.file:
+            mime_type, _ = mimetypes.guess_type(self.file.name)
+            if mime_type:
+                if 'png' in mime_type:
+                    self.file_type = 'PNG'
+                elif 'msword' in mime_type or 'vnd.openxmlformats-officedocument.wordprocessingml.document' in mime_type:
+                    self.file_type = 'DOC'
+                elif 'vnd.openxmlformats-officedocument.presentationml.presentation' in mime_type:
+                    self.file_type = 'PPTX'
+        
+        super().save(*args, **kwargs)
 
     def generate_unique_link(self):
         self.unique_link = get_random_string(32)

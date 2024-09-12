@@ -1,6 +1,5 @@
 body {
     font-family: 'Roboto', sans-serif;
-    background-image: url("{% static 'images/background.jpg' %}");
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -36,7 +35,7 @@ header nav ul li a {
 }
 
 .container {
-    width: 80%;
+    width: 90%;
     margin: 20px auto;
     background-color: white;
     padding: 20px;

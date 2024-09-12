@@ -44,7 +44,7 @@ class FileUploadView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.owner = self.request.user
-        file = form.save(commit=True)
+        file = form.save()
         file.generate_unique_link()         
         file.save()
         form.save_m2m()
@@ -130,7 +130,6 @@ class HashtagFilesView(ListView):
     
     def get_queryset(self):
         self.hashtag = get_object_or_404(Hashtag, pk=self.kwargs['pk'])
-        print(self.hashtag, '-----'*10)
         return File.objects.filter(hashtags=self.hashtag)
     
     def get_context_data(self, **kwargs):
