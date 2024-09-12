@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+  <h1>Public Files</h1>
+  <ol>
+    {% for file in files %}
+      <li>
+        <a href="{% url 'file_detail' file.pk %}">{{ file.file.name }}</a> - Views: {{ file.get_views }}
+      </li>
+    {% endfor %}
+  </ol>
+{% endblock %}

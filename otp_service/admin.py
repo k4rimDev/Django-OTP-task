@@ -1,3 +1,8 @@
 from django.contrib import admin
 
-# Register your models here.
+from otp_service.models import OTP
+
+
+@admin.register(OTP)
+class OTPAdmin(admin.ModelAdmin):
+    list_display = ('phone_number', 'chance_count')

@@ -44,10 +44,9 @@ class CustomUserManager(BaseUserManager):
 class MyUser(AbstractBaseUser, PermissionsMixin):
     class Types(models.TextChoices):
         MODERATOR = "moderator", _('Moderator')
-        CUSTOMER = "customer", _('Müştəri')
-        PRINTING_CENTER = "printing_center", _('Çap mərkəzi')
+        USER = "user", _('İstifadəçi')
 
-    type = models.CharField(_('İstifadəçi tipi'), max_length=55, choices=Types.choices, default=Types.CUSTOMER,
+    type = models.CharField(_('İstifadəçi tipi'), max_length=55, choices=Types.choices, default=Types.USER,
                             editable=False)
 
     phone_number = models.CharField(_('Telefon nömrəsi'), max_length=40, unique=True, error_messages={
@@ -69,7 +68,6 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
         'Designates whether this user should be treated as active. ''Unselect this instead of deleting accounts.'), )
     date_joined = models.DateTimeField(_('date joined'), auto_now=True)
     last_password_forgot_request = models.DateTimeField(_('Last password request date'), auto_now_add=True)
-    is_printing_center = models.BooleanField(_('Çap mərkəzidir?'), default=False)
 
     objects = CustomUserManager()
     EMAIL_FIELD = 'phone_number'
@@ -88,10 +86,8 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
 
     @property
     def user_fields_by_type(self):
-        if self.type == self.Types.CUSTOMER:
+        if self.type == self.Types.USER:
             return self.regular_user_fields
-        elif self.type == self.Types.PRINTING_CENTER:
-            return self.printing_center_user_fields
         return None
 
     def __str__(self):

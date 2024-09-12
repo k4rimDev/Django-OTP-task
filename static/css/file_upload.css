@@ -1,29 +1,177 @@
-/* Styles for the file upload page */
+/* Full-page container to center content */
 .upload-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f5f7fa;
+}
+
+/* Main upload card container */
+.upload-card {
     background-color: #ffffff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    border-radius: 15px;
+    max-width: 600px;
+    width: 100%;
+    box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.1);
+    text-align: left;
 }
-.upload-container h3 {
+
+/* Title styling */
+.upload-title {
+    font-size: 26px;
+    margin-bottom: 25px;
+    color: #2c3e50;
+    font-weight: 600;
     text-align: center;
-    margin-bottom: 20px;
 }
-.upload-container input[type="file"] {
+
+/* Form group styling */
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.form-group label {
+    font-weight: bold;
+    margin-bottom: 10px;
     display: block;
+    font-size: 14px;
+    color: #555;
+}
+
+/* Error styling */
+.form-errors {
+    background-color: #ffe0e0;
+    padding: 15px;
+    border: 1px solid #ff5c5c;
+    border-radius: 8px;
+    color: #a70000;
     margin-bottom: 20px;
 }
-.upload-container textarea {
-    width: 100%;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ddd;
+
+/* Custom file input styling */
+.custom-file-input {
+    position: relative;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
-.upload-container button {
+
+.custom-file-input input[type="file"] {
+    opacity: 0;
+    position: absolute;
+    z-index: 1;
+    cursor: pointer;
     width: 100%;
-    padding: 10px;
+    left: 0;
+}
+
+.file-label {
+    display: inline-block;
     background-color: #3498db;
+    padding: 12px 20px;
+    color: white;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-align: center;
+}
+
+.file-label:hover {
+    background-color: #2980b9;
+}
+
+#file-label-text {
+    font-size: 14px;
+    color: #555;
+}
+
+/* Styled input fields and textareas */
+textarea, select, input[type="text"], input[type="date"], input[type="checkbox"] {
+    width: 100%;
+    padding: 12px;
+    margin-top: 5px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    background-color: #f9f9f9;
+    box-shadow: inset 0px 3px 6px rgba(0, 0, 0, 0.05);
+}
+
+textarea {
+    resize: vertical;
+}
+
+/* Align checkbox with label */
+.visibility-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Animated submit button */
+.submit-btn {
+    width: 100%;
+    padding: 15px;
+    background-color: #e74c3c;
     color: white;
     border: none;
     cursor: pointer;
+    border-radius: 8px;
+    font-size: 18px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-top: 10px;
+}
+
+.submit-btn:hover {
+    background-color: #c0392b;
+    transform: translateY(-2px);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .upload-card {
+        padding: 20px;
+        margin: 20px;
+    }
+
+    .upload-title {
+        font-size: 22px;
+    }
+
+    .submit-btn {
+        font-size: 16px;
+    }
+}
+
+/* Textarea customization */
+textarea {
+    width: 100%;
+    padding: 15px;
+    margin-top: 5px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    background-color: #f9f9f9;
+    box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.05);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    resize: vertical; /* Allow vertical resizing only */
+    min-height: 150px; /* Set a comfortable height */
+}
+
+/* Textarea hover effect */
+textarea:hover {
+    border-color: #bbb; /* Slightly darker border on hover */
+}
+
+/* Textarea focus effect */
+textarea:focus {
+    outline: none;
+    border-color: #3498db; /* Blue border on focus */
+    box-shadow: 0 0 8px rgba(52, 152, 219, 0.3); /* Soft blue shadow on focus */
+    background-color: #fff; /* White background on focus for clarity */
 }

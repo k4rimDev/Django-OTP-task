@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
+{% load static %}
 
-{% block title %}File Upload{% endblock %}
+{% block title %}Upload New File{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/file_upload.css' %}">
@@ -8,12 +9,66 @@
 
 {% block content %}
 <div class="upload-container">
-    <h3>Upload a New File</h3>
-    <form method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        <input type="file" name="file" required>
-        <textarea name="description" placeholder="Add a description" required></textarea>
-        <button type="submit">Upload File</button>
-    </form>
+    <div class="upload-card">
+        <h2 class="upload-title">Upload Your File</h2>
+
+        <!-- Display form errors -->
+        {% if form.errors %}
+            <div class="form-errors">
+                <ul>
+                    {% for field in form %}
+                        {% for error in field.errors %}
+                            <li>{{ field.label }}: {{ error }}</li>
+                        {% endfor %}
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+        
+        <!-- Upload form -->
+        <form method="POST" enctype="multipart/form-data" class="upload-form">
+            {% csrf_token %}
+
+            <!-- Custom file input -->
+            <div class="form-group custom-file-input">
+                <label for="id_file" class="file-label">Choose File</label>
+                <input type="file" id="id_file" name="file" required>
+                <span id="file-label-text">No file chosen</span>
+            </div>
+
+            <!-- Description input -->
+            <div class="form-group">
+                <label for="id_description">Description</label>
+                {{ form.description }}
+            </div>            
+
+            <!-- Hashtags multi-select -->
+            <div class="form-group">
+                <label for="id_hashtags">Select Existing Hashtags</label>
+                {{ form.hashtags }}
+            </div>
+
+            <!-- New Hashtags input -->
+            <div class="form-group">
+                <label for="id_new_hashtags">Add New Hashtags</label>
+                {{ form.new_hashtags }}
+            </div>
+
+            <!-- Public/Private checkbox -->
+            <div class="form-group visibility-group">
+                <label for="id_public">Visibility</label>
+                {{ form.public }}
+            </div>
+
+            <!-- Expiration date input -->
+            <div class="form-group">
+                <label for="id_expiration_date">Expiration Date</label>
+                {{ form.expiration_date }}
+            </div>
+
+            <!-- Submit button -->
+            <button type="submit" class="submit-btn">Upload File</button>
+        </form>
+    </div>
 </div>
 {% endblock %}

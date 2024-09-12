@@ -37,11 +37,10 @@ THIRD_PARTY_APPS = [
 ]
 
 INTERNAL_APPS = [
-    # 'account',
+    'account',
     'base_user',
-    # 'comments',
-    # 'files',
-    # 'otp_service',
+    'dashboard',
+    'otp_service',
 ]
 
 INSTALLED_APPS = [
@@ -176,7 +175,7 @@ CORS_ALLOWED_ORIGINS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Baku'
 
 USE_I18N = True
 
@@ -203,6 +202,24 @@ MEDIA_ROOT = BASE_DIR / "media"
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'base_user.MyUser'
+
+
+# Redis confs
+
+REDIS_HOST = 'redis'
+REDIS_PORT = '6379'
+REDIS_DB = '0'
+REDIS_PASSWORD = os.getenv("REDIS_PASSWORD", None)
+
+
+# Celery confs
+
+CELERY_BROKER_URL = f'redis://:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}/{REDIS_DB}'
+CELERY_RESULT_BACKEND = f'redis://:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}/{REDIS_DB}'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'UTC'
 
 
 # Ckeditor confs

@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}My Files{% endblock %}
+
+{% block content %}
+<div class="profile-container">
+    <h1>My Uploaded Files</h1>
+    <ul class="file-list">
+        {% for file in files %}
+            <li>
+                <a href="{% url 'file_detail' file.pk %}">{{ file.file.name }}</a> - Views: {{ file.get_views }}
+                <br>
+                <small>Unique link: <a href="{% url 'file_access_by_link' file.unique_link %}">{{ file.unique_link }}</a></small>
+            </li>
+        {% empty %}
+            <li>You have not uploaded any files yet.</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

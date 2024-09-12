@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ file.file.name }}{% endblock %}
+
+{% block content %}
+<div class="file-detail-container">
+    <h1>{{ file.file.name }}</h1>
+    <p><strong>Description:</strong> {{ file.description }}</p>
+    <p><strong>Hashtags:</strong> {% for tag in file.hashtags.all %}{{ tag.name }} {% endfor %}</p>
+    <p><strong>Views:</strong> {{ views }}</p>
+    <hr>
+
+    <h2>Comments</h2>
+    <ul class="comment-list">
+        {% for comment in comments %}
+            <li>{{ comment.user.email }}: {{ comment.text }} ({{ comment.created_at }})</li>
+        {% endfor %}
+    </ul>
+
+    {% if user.is_authenticated %}
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Add Comment</button>
+    </form>
+    {% endif %}
+</div>
+{% endblock %}
