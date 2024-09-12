@@ -6,7 +6,9 @@ click==8.1.7
 click-didyoumean==0.3.1
 click-plugins==1.1.1
 click-repl==0.3.0
+cron-descriptor==1.4.5
 Django==4.2.16
+django-celery-beat==2.7.0
 django-ckeditor==6.7.1
 django-cors-headers==4.4.0
 django-extensions==3.2.3
@@ -15,8 +17,10 @@ django-formtools==2.5.1
 django-js-asset==2.2.0
 django-otp==1.5.4
 django-phonenumber-field==8.0.0
+django-timezone-field==7.0
 django-two-factor-auth==1.17.0
 djangorestframework==3.15.2
+djangorestframework-simplejwt==5.3.1
 drf-yasg==1.21.7
 gunicorn==20.1.0
 inflection==0.5.1
@@ -26,8 +30,11 @@ packaging==24.1
 Pillow==9.5.0
 prompt_toolkit==3.0.47
 psycopg2==2.9.9
+PyJWT==2.9.0
 pypng==0.20220715.0
+python-crontab==3.2.0
 python-dateutil==2.9.0.post0
+python-dotenv==1.0.1
 pytz==2024.2
 PyYAML==6.0.2
 qrcode==7.4.2

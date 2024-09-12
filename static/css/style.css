@@ -1,27 +1,94 @@
-/* Base styling for the entire application */
 body {
     font-family: 'Roboto', sans-serif;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
     margin: 0;
     padding: 0;
-    background-color: #f0f2f5;
 }
-.container {
-    width: 80%;
-    margin: 0 auto;
-    padding: 20px;
+
+header, footer {
+    background-color: rgba(0, 0, 0, 0.7);
 }
+
 header {
     background-color: #333;
-    color: white;
     padding: 10px 0;
+    color: white;
     text-align: center;
 }
+
+header nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+header nav ul li {
+    display: inline;
+    margin-right: 15px;
+}
+
+header nav ul li a {
+    color: white;
+    text-decoration: none;
+}
+
+.container {
+    width: 90%;
+    margin: 20px auto;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.profile-container h1 {
+    margin-bottom: 20px;
+}
+
+.file-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.file-list li {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.comment-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.comment-list li {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
 footer {
+    text-align: center;
+    padding: 10px 0;
     background-color: #333;
     color: white;
-    padding: 10px;
-    text-align: center;
     position: fixed;
     bottom: 0;
     width: 100%;
+}
+
+.download-btn {
+    display: inline-block;
+    padding: 5px 10px;
+    background-color: #3498db;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.download-btn:hover {
+    background-color: #2980b9;
 }

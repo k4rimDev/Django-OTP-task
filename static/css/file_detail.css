@@ -1,0 +1,146 @@
+.detail-container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* File Information Styling */
+.file-card {
+    padding: 20px;
+    border-bottom: 1px solid #ddd;
+}
+
+.file-card h2 {
+    margin-bottom: 10px;
+    font-size: 24px;
+    color: #333;
+}
+
+.file-card p {
+    margin-bottom: 10px;
+}
+
+.file-card .hashtag {
+    background-color: #3498db;
+    color: white;
+    padding: 3px 8px;
+    border-radius: 3px;
+    text-decoration: none;
+    margin-right: 5px;
+}
+
+.file-card .hashtag:hover {
+    background-color: #2980b9;
+}
+
+/* Edit and Delete Buttons for File */
+.file-actions {
+    margin-top: 15px;
+}
+
+.edit-btn, .delete-btn {
+    padding: 10px 15px;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+.edit-btn {
+    padding: 13px 15px;
+    background-color: #f39c12;
+}
+
+.edit-btn:hover {
+    background-color: #e67e22;
+}
+
+.delete-btn {
+    background-color: #e74c3c;
+    border: none;
+    cursor: pointer;
+}
+
+.delete-btn:hover {
+    background-color: #c0392b;
+}
+
+/* Comments Section */
+.comments-section {
+    margin-top: 20px;
+}
+
+.comments-section h3 {
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+
+.comment-list {
+    list-style: none;
+    padding: 0;
+}
+
+.comment-list li {
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+.comment-date {
+    display: block;
+    font-size: 12px;
+    color: #999;
+}
+
+.delete-comment-btn {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.delete-comment-btn:hover {
+    background-color: #c0392b;
+}
+
+/* Comment Form */
+.comment-form {
+    margin-top: 20px;
+}
+
+.comment-form h3 {
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+
+.comment-form form {
+    display: flex;
+    flex-direction: column;
+}
+
+.comment-form textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+.comment-form .submit-btn {
+    align-self: flex-start;
+    background-color: #2ecc71;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.comment-form .submit-btn:hover {
+    background-color: #27ae60;
+}

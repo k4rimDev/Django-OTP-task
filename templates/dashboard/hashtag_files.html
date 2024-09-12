@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Files Tagged "{{ hashtag.name }}"{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/hashtag_files.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="hashtag-container">
+    <h2>Files Tagged "{{ hashtag.name }}"</h2>
+    <ul class="file-list">
+        {% for file in files %}
+            <li>
+                <a href="{% url 'file_detail' file.pk %}">{{ file.file.name }}</a> - {{ file.description }}
+            </li>
+        {% empty %}
+            <li>No files found with this hashtag.</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

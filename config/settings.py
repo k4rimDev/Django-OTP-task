@@ -12,9 +12,13 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 import os
 from pathlib import Path
 
+from dotenv import load_dotenv
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+load_dotenv()
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
@@ -32,16 +36,16 @@ ALLOWED_HOSTS = ["*"]
 
 THIRD_PARTY_APPS = [
     'corsheaders',
-    'rest_framework',
+    'django_celery_beat',
     'drf_yasg',
+    'rest_framework',
 ]
 
 INTERNAL_APPS = [
-    # 'account',
+    'account',
     'base_user',
-    # 'comments',
-    # 'files',
-    # 'otp_service',
+    'dashboard',
+    'otp_service',
 ]
 
 INSTALLED_APPS = [
@@ -176,7 +180,7 @@ CORS_ALLOWED_ORIGINS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Baku'
 
 USE_I18N = True
 
@@ -203,6 +207,24 @@ MEDIA_ROOT = BASE_DIR / "media"
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'base_user.MyUser'
+
+
+# Redis confs
+
+REDIS_HOST = 'redis'
+REDIS_PORT = '6379'
+REDIS_DB = '0'
+REDIS_PASSWORD = os.getenv("REDIS_PASSWORD", None)
+
+
+# Celery confs
+
+CELERY_BROKER_URL = f'redis://:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}/{REDIS_DB}'
+CELERY_RESULT_BACKEND = f'redis://:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}/{REDIS_DB}'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'UTC'
 
 
 # Ckeditor confs

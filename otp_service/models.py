@@ -1,34 +1,34 @@
-import random
-import string
-
 from datetime import timedelta
 
 from django.db import models
-from django.conf import settings
 from django.utils import timezone
 
 
-class OTPDevice(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+class OTP(models.Model):
+    phone_number = models.CharField(max_length=15)
     otp_code = models.CharField(max_length=6)
-    otp_created_at = models.DateTimeField(auto_now_add=True)
-    otp_attempts = models.IntegerField(default=4)
+    chance_count = models.IntegerField(default=4)
+    created_at = models.DateTimeField(auto_now_add=True)
+    expires_at = models.DateTimeField()
+    last_sent_at = models.DateTimeField()
 
-    def generate_otp(self):
-        self.otp_code = ''.join(random.choices(string.digits, k=6))
-        self.otp_created_at = timezone.now()
-        self.save()
+    def save(self, *args, **kwargs):
+        if not self.expires_at:
+            self.expires_at = timezone.now() + timezone.timedelta(minutes=10)
+        if not self.last_sent_at:
+            self.last_sent_at = timezone.now()
+        super().save(*args, **kwargs)
 
-    def is_valid_otp(self, code):
-        if self.otp_code == code and (timezone.now() - self.otp_created_at) <= timedelta(minutes=5):
-            return True
-        return False
+    def is_expired(self):
+        return timezone.now() > self.expires_at
+    
+    def can_resend(self):
+        return timezone.now() > self.last_sent_at + timezone.timedelta(minutes=1)
 
-    def reset_otp(self):
-        """Reset OTP and attempts."""
-        self.otp_code = None
-        self.otp_attempts = 4
-        self.save()
+    def reset_chance_count(self):
+        if self.created_at < timezone.now() - timezone.timedelta(hours=1):
+            self.chance_count = 4
+            self.save()
 
     def __str__(self):
-        return f'OTP for {self.user.email} (created at {self.otp_created_at})'
+        return f'{self.phone_number} - {self.otp_code}'

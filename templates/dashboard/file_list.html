@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+  <h1>Public Files</h1>
+  <ol>
+    {% for file in files %}
+      <li class='d-flex justify-content-between mb-3'>
+        <div>
+          <a href="{% url 'file_detail' file.pk %}">{{ file.file.name }}</a> - Views: {{ file.get_views }}  
+        </div>
+          
+        <div>
+          <a href="{% url 'file_download' file.pk %}" class="download-btn">Download File</a>
+        </div>
+      </li>
+    {% endfor %}
+  </ol>
+{% endblock %}
