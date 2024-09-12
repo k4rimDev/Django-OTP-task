@@ -7,30 +7,36 @@ from django.core.mail import send_mail
 from django.utils import timezone
 from django.core.cache import cache
 
+from account.models import MyUser as User
 from otp_service.models import OTP
 
 
 class OTPService:
     @staticmethod
-    def generate_otp(user):
+    def generate_otp(user: User) -> str:
         """Generates a 6-digit OTP for the user and saves it to the OTP model."""
         otp_code = ''.join(random.choices(string.digits, k=6))
-        otp_device, created = OTP.objects.get_or_create(user=user)
+        otp_device, created = OTP.objects.get_or_create(phone_number=user.phone_number)
         otp_device.otp_code = otp_code
-        otp_device.otp_created_at = timezone.now()
+        otp_device.created_at = timezone.now()
         otp_device.save()
 
         return otp_code
 
     @staticmethod
-    def send_otp_via_email(user, otp_code):
+    def send_otp_via_email(user, otp_code: str, sender_mail: str) -> None:
         """Sends OTP to the user's email."""
         subject = "Your OTP Code"
         message = f"Your OTP code is {otp_code}. This code is valid for 5 minutes."
-        send_mail(subject, message, 'no-reply@myproject.com', [user.email])
+        # send_mail(subject, message, sender_mail, [user.email])
 
     @staticmethod
-    def verify_otp(user, code):
+    def send_otp_via_sms(user, otp_code) -> None:
+        """Sends OTP to the user's phone number."""
+        pass
+
+    @staticmethod
+    def verify_otp(user, code: str) -> bool:
         """Verifies if the provided OTP is valid and has not expired."""
         try:
             otp_device = OTP.objects.get(user=user)
@@ -41,7 +47,7 @@ class OTPService:
             return False
 
     @staticmethod
-    def rate_limit_otp(user):
+    def rate_limit_otp(user) -> bool:
         """Prevents OTP spam by limiting the frequency of OTP generation."""
         if cache.get(f'otp_rate_limit_{user.id}'):
             return True
