@@ -8,9 +8,9 @@ from celery.schedules import crontab
 from django.conf import settings
 
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'my_project.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
 
-app = Celery('my_project')
+app = Celery('config')
 
 app.config_from_object('django.conf:settings', namespace='CELERY')
 
@@ -26,6 +26,6 @@ def debug_task(self):
 app.conf.beat_schedule = {
     'delete-expired-files-every-day': {
         'task': 'dashboard.tasks.delete_expired_files',
-        'schedule': crontab(hour=0, minute=0),  # Every day at midnight
+        'schedule': crontab(minute='*/10'), # Every 10 min
     },
 }
