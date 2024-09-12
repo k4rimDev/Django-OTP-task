@@ -1,10 +1,18 @@
 from django.urls import reverse_lazy
 from django.shortcuts import get_object_or_404, redirect
-from django.http import HttpResponseForbidden
-from django.views.generic import ListView, CreateView, DetailView, DeleteView
+from django.http import HttpResponseForbidden, HttpResponse
+from django.views import View
+from django.views.generic import (
+    ListView, 
+    CreateView, 
+    DetailView, 
+    DeleteView, 
+    UpdateView
+)
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .models import File, Comment
-from .forms import FileForm, CommentForm
+
+from dashboard.models import File, Comment, Hashtag
+from dashboard.forms import FileForm, CommentForm
 
 
 class FileListView(ListView):
@@ -79,3 +87,53 @@ class FileDeleteView(LoginRequiredMixin, DeleteView):
         if file.owner != request.user:
             return HttpResponseForbidden()
         return super().dispatch(request, *args, **kwargs)
+
+
+class CommentDeleteView(LoginRequiredMixin, DeleteView):
+    model = Comment
+    success_url = reverse_lazy('file_list')
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        return qs.filter(user=self.request.user) | qs.filter(file__owner=self.request.user)
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        file_id = self.object.file.id
+        success_url = reverse_lazy('file_detail', kwargs={'pk': file_id})
+        self.object.delete()
+        return redirect(success_url)
+
+
+class FileEditView(LoginRequiredMixin, UpdateView):
+    model = File
+    form_class = FileForm
+    template_name = 'dashboard/file_edit.html'
+    success_url = reverse_lazy('file_list')
+
+    def get_queryset(self):
+        return File.objects.filter(owner=self.request.user)
+    
+
+class FileDownloadView(View):
+    def get(self, request, pk, *args, **kwargs):
+        file_instance = get_object_or_404(File, pk=pk)
+        response = HttpResponse(file_instance.file.open(), content_type='application/octet-stream')
+        response['Content-Disposition'] = f'attachment; filename="{file_instance.file.name}"'
+        return response
+
+
+class HashtagFilesView(ListView):
+    model = File
+    template_name = 'dashboard/hashtag_files.html'
+    context_object_name = 'files'
+    
+    def get_queryset(self):
+        self.hashtag = get_object_or_404(Hashtag, pk=self.kwargs['pk'])
+        print(self.hashtag, '-----'*10)
+        return File.objects.filter(hashtags=self.hashtag)
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['hashtag'] = self.hashtag
+        return context

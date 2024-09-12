@@ -1,28 +1,76 @@
 {% extends 'base.html' %}
+{% load static %}
 
-{% block title %}{{ file.file.name }}{% endblock %}
+{% block title %}File Details{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/file_detail.css' %}">
+{% endblock %}
 
 {% block content %}
-<div class="file-detail-container">
-    <h1>{{ file.file.name }}</h1>
-    <p><strong>Description:</strong> {{ file.description }}</p>
-    <p><strong>Hashtags:</strong> {% for tag in file.hashtags.all %}{{ tag.name }} {% endfor %}</p>
-    <p><strong>Views:</strong> {{ views }}</p>
-    <hr>
+<div class="detail-container">
+    <!-- File Information -->
+    <div class="file-card">
+        <h2>{{ file.file.name }}</h2>
+        <p><strong>Description:</strong> {{ file.description }}</p>
+        <p><strong>Hashtags:</strong> 
+            {% for tag in file.hashtags.all %}
+                <a href="{% url 'hashtag_files' tag.id %}" class="hashtag">{{ tag.name }}</a>
+            {% empty %}
+                <span>No hashtags added</span>
+            {% endfor %}
+        </p>
+        <p><strong>Views:</strong> {{ views }}</p>
+        <p><strong>Expiration:</strong> {{ file.expiration_date|date:"Y-m-d H:i" }}</p>
+        <p><strong>Owner:</strong> {{ file.owner }}</p>
 
-    <h2>Comments</h2>
-    <ul class="comment-list">
-        {% for comment in comments %}
-            <li>{{ comment.user.email }}: {{ comment.text }} ({{ comment.created_at }})</li>
-        {% endfor %}
-    </ul>
+        <!-- Edit and Delete Buttons for the File Owner -->
+        {% if request.user == file.owner %}
+        <div class="file-actions mb-3">
+            <a href="{% url 'file_edit' file.pk %}" class="edit-btn">Edit</a>
+            <form action="{% url 'file_delete' file.pk %}" method="POST" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="delete-btn">Delete</button>
+            </form>
+        </div>
+        {% endif %}
+        <a href="{% url 'file_download' file.pk %}" class="download-btn">Download File</a>
+    </div>
 
+    <!-- Comments Section -->
+    <div class="comments-section">
+        <h3>Comments</h3>
+        <ul class="comment-list">
+            {% for comment in comments %}
+                <li>
+                    <strong>{{ comment.user.email }}</strong>:
+                    {{ comment.text }}
+                    <span class="comment-date">{{ comment.created_at|date:"Y-m-d H:i" }}</span>
+                    
+                    <!-- Show delete button if the comment belongs to the user or file owner -->
+                    {% if request.user == comment.user or request.user == file.owner %}
+                        <form action="{% url 'comment_delete' comment.pk %}" method="POST" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="delete-comment-btn">Delete</button>
+                        </form>
+                    {% endif %}
+                </li>
+            {% empty %}
+                <li>No comments yet. Be the first to comment!</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- Add Comment Form (for logged-in users) -->
     {% if user.is_authenticated %}
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Add Comment</button>
-    </form>
+    <div class="comment-form">
+        <h3>Add a Comment</h3>
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="submit-btn">Post Comment</button>
+        </form>
+    </div>
     {% endif %}
 </div>
 {% endblock %}
