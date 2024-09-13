@@ -40,8 +40,8 @@ app.conf.beat_schedule = {
 
 
 app.conf.update(
-    BROKER_URL='redis://:{password}@localhost:6379/0'.format(password=os.getenv("REDIS_PASSWORD", None)),
-    CELERY_RESULT_BACKEND='redis://:{password}@localhost:6379/1'.format(password=os.getenv("REDIS_PASSWORD", None)),
+    BROKER_URL='redis://:{password}@redis:6379/0'.format(password=os.getenv("REDIS_PASSWORD", None)),
+    CELERY_RESULT_BACKEND='redis://:{password}@redis:6379/1'.format(password=os.getenv("REDIS_PASSWORD", None)),
     CELERY_DISABLE_RATE_LIMITS=True,
     CELERY_ACCEPT_CONTENT=['json', ],
     CELERY_TASK_SERIALIZER='json',
