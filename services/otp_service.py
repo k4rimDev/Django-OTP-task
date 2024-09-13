@@ -8,6 +8,7 @@ from django.utils import timezone
 from django.core.cache import cache
 
 from account.models import MyUser as User
+from account.tasks import send_email_task
 from otp_service.models import OTP
 
 
@@ -24,11 +25,11 @@ class OTPService:
         return otp_code
 
     @staticmethod
-    def send_otp_via_email(user, otp_code: str, sender_mail: str) -> None:
+    def send_otp_via_email(user: User, otp_code: str) -> None:
         """Sends OTP to the user's email."""
         subject = "Your OTP Code"
-        message = f"Your OTP code is {otp_code}. This code is valid for 5 minutes."
-        # send_mail(subject, message, sender_mail, [user.email])
+        body = f"Your OTP code is {otp_code}. This code is valid for 5 minutes."
+        send_email_task.delay(subject=subject, body=body, to_mail=user.email)
 
     @staticmethod
     def send_otp_via_sms(user, otp_code) -> None:
