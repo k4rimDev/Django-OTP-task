@@ -35,14 +35,17 @@ class OTPLoginView(FormView):
 
         user = None
         if email:
-            user = User.objects.filter(email=email).first()
+            user, created = User.objects.get_or_create(email=email)
+            if created:
+                user.first_name = email
+                user.save()
         elif phone_number:
             user = User.objects.filter(phone_number=phone_number).first()
 
         if user:
             otp = OTPService.generate_otp(user)
             if email:
-                OTPService.send_otp_via_email(user, otp, "321kerim123@gmail.com")
+                OTPService.send_otp_via_email(user, otp)
             elif phone_number:
                 OTPService.send_otp_via_sms(user, otp)
 
