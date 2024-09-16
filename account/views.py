@@ -35,7 +35,7 @@ class OTPLoginView(FormView):
 
         user = None
         if email:
-            user, created = User.objects.get_or_create(email=email, phone_number=email)
+            user, created = User.objects.get_or_create(email=email, phone_number=email[:15])
             if created:
                 user.first_name = email
                 user.save()
